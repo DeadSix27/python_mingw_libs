@@ -1,7 +1,11 @@
 # Python mingw library creator script
 #### written in Python (ironically)
 
-Creates MinGW compatible library files using gendef/dlltool, for people too lazy to cross compile python.
+Creates MinGW compatible library files of the Python DLL using gendef/dlltool, for people too lazy to cross compile python.
+
+### Supports:
+ - Python 3.6.1
+ - Win64 and 32 (64 tesred only)
 
 ### Requires: 
  - gendef (part of mingw)

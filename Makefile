@@ -11,9 +11,6 @@
 # limitations under the License.
 # #################################################################################################################
 
-
-# GENDEF=/ffm/test/workdir/xcompilers/mingw-w64-x86_64/bin/gendef DLLTOOL=/ffm/test/workdir/xcompilers/mingw-w64-x86_64/bin/x86_64-w64-mingw32-dlltool
-
 PYTHON_VERSION = 3.6.1
 #amd64, win32
 ARCH = amd64
@@ -26,8 +23,6 @@ endif
 ifndef DLLTOOL
 $(error DLLTOOL is not set)
 endif
-# https://www.python.org/ftp/python/3.6.1/python-3.6.1-embed-amd64.zip
-# https://www.python.org/ftp/python/3.6.1/python-3.6.1-embed-win32.zip
 
 all:
 	@python install_python_libs.py install $(ARCH) $(PYTHON_VERSION) $(PREFIX) $(DLLTOOL) $(GENDEF)
