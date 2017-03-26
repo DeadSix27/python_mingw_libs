@@ -93,11 +93,11 @@ else:
 		
 		
 		
-		os.system("mkdir pkg-config")
+		os.system("mkdir pkgconfig")
 		
-		os.chdir("pkg-config")
+		os.chdir("pkgconfig")
 		
-		print("Creating pkg-config")
+		print("Creating pkgconfig")
 		
 		pc = VERSION_SPECIFICS[ver]["pcfile"].replace('%%PREFIX%%',prefix)
 		
@@ -129,7 +129,7 @@ else:
 			os.system("rm -r work")
 			exit(1)
 		
-		os.system("cp -rv work/* {0}".format(prefix))
+		os.system("rsync -aKv work/ {0}".format(prefix))
 		
 		os.system("rm -r work")
 		
