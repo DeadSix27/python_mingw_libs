@@ -24,6 +24,7 @@ VERSION_SPECIFICS = {
 			'python-3.6.pc',
 			'python3.pc',
 			'python-3.6m.pc',
+			'python-3.5.pc', # yes we fake being 3.5, what could possibly go wrong! (mpv/vapoursynth seems to want 35 but also works with 36... ???)
 		),
 		'libname' : 'libpython36.a',
 		'pcfile' : 
@@ -35,10 +36,10 @@ VERSION_SPECIFICS = {
 			'\nName: Python'
 			'\nDescription: Python library'
 			'\nRequires:'
-			'\nVersion: 3.6.1' # yes we fake being 3.5, what could possibly go wrong? (mpv/vapoursynth seems to want 35 but works with 36?????)
+			'\nVersion: 3.6.1'
 			'\nLibs.private: -lpthread -ldl -lutil'
-			'\nLibs: -L${libdir} -lpython3.6m'
-			'\nCflags: -I${includedir}/python3.6m',
+			'\nLibs: -L${libdir} -lpython36'
+			'\nCflags: -I${includedir}/python3',
 	},
 }
 
@@ -48,6 +49,18 @@ def exitHelp():
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
 	exit(1)
+	
+def simplePatch(infile,replacetext,withtext):
+	lines = []
+	print("Patching " + infile )
+	with open(infile) as f:
+		for line in f:
+			line = line.replace(replacetext, withtext)
+			lines.append(line)
+	with open(infile, 'w') as f2:
+		for line in lines:
+			f2.write(line)
+
 
 if len(sys.argv) != 7:
 	exitHelp()
@@ -117,6 +130,16 @@ else:
 		os.system("mkdir include")
 		os.system("tar -xvf {0} Python-{1}/Include".format(filename,ver))
 		os.system("mv Python-{0}/Include include/python3".format(ver))
+		
+		
+		os.system("tar -xvf {0} Python-{1}/PC/pyconfig.h".format(filename,ver))
+		
+		simplePatch("Python-{0}/PC/pyconfig.h".format(ver),"#define hypot _hypot","#if (__GNUC__<6)\n#define hypot _hypot\n#endif")
+		
+		os.system("mv Python-{0}/PC/pyconfig.h include/python3/".format(ver))
+		
+		
+		
 		print("Done")
 		os.unlink(filename)
 		os.system("rm -r Python-{0}".format(ver))
