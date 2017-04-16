@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 # #################################################################################################################
-# Copyright (C) 2017 DeadSix27
+# Copyright (C) 2017 DeadSix27 (https://github.com/DeadSix27/python_mingw_libs)
 #
-# This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-# To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +15,6 @@
 # #################################################################################################################
 
 import sys,os,urllib
-
 SUPPORTED_VERSIONS = ('3.6.1',)
 
 VERSION_SPECIFICS = {
@@ -76,6 +76,7 @@ else:
 			exitVersions()
 			
 		os.system("mkdir work")
+		os.system("mkdir bin")
 		os.chdir("work")
 		os.system("mkdir lib")
 		os.chdir("lib")
@@ -89,6 +90,8 @@ else:
 		
 		print("Extracting dll")
 		os.system('unzip -p {0} {1} >{1}'.format(filename,dllname))
+		print("Local installing dll")
+		os.system('cp {0} ../bin'.format(dllname))
 		print("Done")
 		print("Deleting archive")
 		os.unlink(filename)
