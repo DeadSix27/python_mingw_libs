@@ -3,11 +3,13 @@
 
 Creates MinGW compatible library files of the Python DLL using gendef/dlltool, for people too lazy to cross compile python.
 
+Python source: https://www.python.org/downloads/source/
+
 ### Supports:
- - Python 3.6.1 Win64 and 32 variants (only tested 64bit)
+ - Python 3.6.1 Win64 and 32 variants (Only tested 64bit)
 
 ### Requires: 
- - gendef (part of mingw)
+ - gendef (part of MinGW)
  - dlltool (so is this)
  - Python 2(+)
 
