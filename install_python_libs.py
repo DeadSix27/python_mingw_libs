@@ -91,7 +91,7 @@ else:
 		print("Extracting dll")
 		os.system('unzip -po {0} {1} >{1}'.format(filename,dllname))
 		print("Local installing dll")
-		os.system('cp {0} ../bin'.format(dllname))
+		os.system('cp {0} ../../bin'.format(dllname))
 		print("Done")
 		print("Deleting archive")
 		os.unlink(filename)
