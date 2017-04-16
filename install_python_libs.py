@@ -89,7 +89,7 @@ else:
 		dllname = VERSION_SPECIFICS[ver]["dllname"]
 		
 		print("Extracting dll")
-		os.system('unzip -p {0} {1} >{1}'.format(filename,dllname))
+		os.system('unzip -po {0} {1} >{1}'.format(filename,dllname))
 		print("Local installing dll")
 		os.system('cp {0} ../bin'.format(dllname))
 		print("Done")
