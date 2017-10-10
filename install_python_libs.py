@@ -15,10 +15,10 @@
 # #################################################################################################################
 
 import sys,os,urllib
-SUPPORTED_VERSIONS = ('3.6.1',)
+SUPPORTED_VERSIONS = ('3.6.3',)
 
 VERSION_SPECIFICS = {
-	'3.6.1' : {
+	'3.6.3' : {
 		'dllname' : 'python36.dll',
 		'pc_names' : (
 			'python-3.6.pc',
@@ -36,7 +36,7 @@ VERSION_SPECIFICS = {
 			'\nName: Python'
 			'\nDescription: Python library'
 			'\nRequires:'
-			'\nVersion: 3.6.1'
+			'\nVersion: 3.6.3'
 			'\nLibs.private: -lpthread -ldl -lutil'
 			'\nLibs: -L${libdir} -lpython36'
 			'\nCflags: -I${includedir}/python3',
