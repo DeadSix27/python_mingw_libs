@@ -15,16 +15,16 @@
 # #################################################################################################################
 
 import sys,os,urllib
-SUPPORTED_VERSIONS = ('3.6.3',)
+SUPPORTED_VERSIONS = ('3.6.4',)
 
 VERSION_SPECIFICS = {
-	'3.6.3' : {
+	'3.6.4' : {
 		'dllname' : 'python36.dll',
 		'pc_names' : (
 			'python-3.6.pc',
 			'python3.pc',
 			'python-3.6m.pc',
-			'python-3.5.pc', # yes we fake being 3.5, what could possibly go wrong! (mpv/vapoursynth seems to want 35 but also works with 36... ???)
+			#'python-3.5.pc', # yes we fake being 3.5, what could possibly go wrong! (mpv/vapoursynth seems to want 35 but also works with 36... ???)
 		),
 		'libname' : 'libpython36.a',
 		'pcfile' : 
@@ -36,7 +36,7 @@ VERSION_SPECIFICS = {
 			'\nName: Python'
 			'\nDescription: Python library'
 			'\nRequires:'
-			'\nVersion: 3.6.3'
+			'\nVersion: 3.6.4'
 			'\nLibs.private: -lpthread -ldl -lutil'
 			'\nLibs: -L${libdir} -lpython36'
 			'\nCflags: -I${includedir}/python3',
@@ -44,7 +44,7 @@ VERSION_SPECIFICS = {
 }
 
 def exitHelp():
-	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.6.1 /test/cross_compilers/....../")
+	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.6.4 /test/cross_compilers/....../")
 	exit(1)
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
