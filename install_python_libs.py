@@ -100,7 +100,7 @@ else:
 		os.system("{0} {1}".format(gendef,dllname))
 		
 		defname = "".join(dllname.split(".")[:1]) + ".def"
-		os.system("{0} -d {1} -l {2}".format(dlltool,defname,VERSION_SPECIFICS[ver]["libname"]))
+		os.system("{0} -d {1} -y {2}".format(dlltool,defname,VERSION_SPECIFICS[ver]["libname"]))
 		
 		print("Done")
 		
