@@ -15,10 +15,9 @@
 # #################################################################################################################
 
 import sys,os,urllib
-SUPPORTED_VERSIONS = ('3.6.4',)
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5']
 
-VERSION_SPECIFICS = {
-	'3.6.4' : {
+PACKAGE_STUFF = {
 		'dllname' : 'python36.dll',
 		'pc_names' : (
 			'python-3.6.pc',
@@ -36,15 +35,14 @@ VERSION_SPECIFICS = {
 			'\nName: Python'
 			'\nDescription: Python library'
 			'\nRequires:'
-			'\nVersion: 3.6.4'
+			'\nVersion: %%VERSION%%'
 			'\nLibs.private: -lpthread -ldl -lutil'
 			'\nLibs: -L${libdir} -lpython36'
 			'\nCflags: -I${includedir}/python3',
-	},
 }
 
 def exitHelp():
-	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.6.4 /test/cross_compilers/....../")
+	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.6.5 /test/cross_compilers/....../")
 	exit(1)
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
@@ -86,7 +84,7 @@ else:
 		urllib.urlretrieve(url,filename)
 		print("Done")
 		
-		dllname = VERSION_SPECIFICS[ver]["dllname"]
+		dllname = PACKAGE_STUFF["dllname"]
 		
 		print("Extracting dll")
 		os.system('unzip -po {0} {1} >{1}'.format(filename,dllname))
@@ -100,7 +98,7 @@ else:
 		os.system("{0} {1}".format(gendef,dllname))
 		
 		defname = "".join(dllname.split(".")[:1]) + ".def"
-		os.system("{0} -d {1} -y {2}".format(dlltool,defname,VERSION_SPECIFICS[ver]["libname"]))
+		os.system("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"]))
 		
 		print("Done")
 		
@@ -115,9 +113,9 @@ else:
 		
 		print("Creating pkgconfig")
 		
-		pc = VERSION_SPECIFICS[ver]["pcfile"].replace('%%PREFIX%%',prefix)
+		pc = PACKAGE_STUFF["pcfile"].replace('%%PREFIX%%',prefix).replace('%%VERSION%%',ver)
 		
-		for fn in VERSION_SPECIFICS[ver]["pc_names"]:
+		for fn in PACKAGE_STUFF["pc_names"]:
 			with open(fn,"w") as f:
 				f.write(pc)
 		
