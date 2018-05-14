@@ -36,7 +36,7 @@ PACKAGE_STUFF = {
 			'\nDescription: Python library'
 			'\nRequires:'
 			'\nVersion: %%VERSION%%'
-			'\nLibs.private: -lpthread -ldl -lutil'
+			'\nLibs.private:'
 			'\nLibs: -L${libdir} -lpython36'
 			'\nCflags: -I${includedir}/python3',
 }
