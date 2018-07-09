@@ -18,7 +18,7 @@ import sys,os,urllib
 SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6']
 
 PACKAGE_STUFF = {
-		'dllname' : 'python36.dll',
+		'dllzname' : 'python36',
 		'pc_names' : (
 			'python-3.6.pc',
 			'python3.pc',
@@ -83,12 +83,14 @@ else:
 		urllib.urlretrieve(url,filename)
 		print("Done")
 		
-		dllname = PACKAGE_STUFF["dllname"]
+		dllname = PACKAGE_STUFF["dllzname"]
 		
 		print("Extracting dll")
 		os.system('unzip -po {0} {1} >{1}'.format(filename,dllname))
 		print("Local installing dll")
-		os.system('cp {0} ../../bin'.format(dllname))
+		os.system('cp {0}.zip ../../bin'.format(dllname))
+		os.system('cp {0}.dll ../../bin'.format(dllname))
+		os.system('cp _ctypes.pyd ../../bin'.format(dllname))
 		print("Done")
 		print("Deleting archive")
 		os.unlink(filename)
