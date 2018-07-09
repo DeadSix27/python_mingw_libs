@@ -15,10 +15,10 @@
 # #################################################################################################################
 
 import sys,os,urllib
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5', '3.7.0']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.7.0']
 
 PACKAGE_STUFF = {
-		'dllname' : 'python36.dll',
+		'dllname' : 'python37.dll',
 		'pc_names' : (
 			'python-3.7.pc',
 			'python3.pc',
