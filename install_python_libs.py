@@ -15,7 +15,7 @@
 # #################################################################################################################
 
 import sys,os,urllib
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6']
 
 PACKAGE_STUFF = {
 		'dllname' : 'python36.dll',
@@ -23,7 +23,6 @@ PACKAGE_STUFF = {
 			'python-3.6.pc',
 			'python3.pc',
 			'python-3.6m.pc',
-			#'python-3.5.pc', # yes we fake being 3.5, what could possibly go wrong! (mpv/vapoursynth seems to want 35 but also works with 36... ???)
 		),
 		'libname' : 'libpython36.a',
 		'pcfile' : 
@@ -42,7 +41,7 @@ PACKAGE_STUFF = {
 }
 
 def exitHelp():
-	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.6.5 /test/cross_compilers/....../")
+	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.0 /test/cross_compilers/....../")
 	exit(1)
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
