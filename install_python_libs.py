@@ -15,17 +15,16 @@
 # #################################################################################################################
 
 import sys,os,urllib
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.7.0']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6']
 
 PACKAGE_STUFF = {
-		'dllname' : 'python37.dll',
+		'dllname' : 'python36.dll',
 		'pc_names' : (
-			'python-3.7.pc',
+			'python-3.6.pc',
 			'python3.pc',
-			'python-3.7m.pc',
-			#'python-3.5.pc', # yes we fake being 3.5, what could possibly go wrong! (mpv/vapoursynth seems to want 35 but also works with 36... ???)
+			'python-3.6m.pc',
 		),
-		'libname' : 'libpython37.a',
+		'libname' : 'libpython36.a',
 		'pcfile' : 
 			'prefix=%%PREFIX%%'
 			'\nexec_prefix=${prefix}'
