@@ -86,7 +86,7 @@ else:
 		dllname = PACKAGE_STUFF["dllzname"]
 		
 		print("Extracting dll")
-		os.system('unzip -po {0} {1} >{1}'.format(filename,dllname))
+		os.system('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
 		print("Local installing dll")
 		os.system('cp {0}.zip ../../bin'.format(dllname))
 		os.system('cp {0}.dll ../../bin'.format(dllname))
@@ -96,17 +96,15 @@ else:
 		os.unlink(filename)
 		
 		print("Creating library")
-		os.system("{0} {1}".format(gendef,dllname))
+		os.system("{0} {1}.dll".format(gendef,dllname))
 		
-		defname = "".join(dllname.split(".")[:1]) + ".def"
+		defname = dllname + ".def"
 		os.system("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"]))
 		
 		print("Done")
 		
 		os.unlink(defname)
-		os.unlink(dllname)
-		
-		
+		os.unlink(dllname+".dll")		
 		
 		os.system("mkdir pkgconfig")
 		
