@@ -87,6 +87,8 @@ else:
 		
 		print("Extracting dll")
 		os.system('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
+		os.system('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
+		os.system('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
 		print("Local installing dll")
 		os.system('cp {0}.zip ../../bin'.format(dllname))
 		os.system('cp {0}.dll ../../bin'.format(dllname))
