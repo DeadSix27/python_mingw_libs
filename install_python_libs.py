@@ -58,7 +58,10 @@ def simplePatch(infile,replacetext,withtext):
 		for line in lines:
 			f2.write(line)
 
-
+if not is_tool("rsync"):
+	print("Please make sure that rsync is installed.")
+	exit(1)
+			
 if len(sys.argv) != 7:
 	exitHelp()
 else:
