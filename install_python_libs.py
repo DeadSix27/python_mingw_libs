@@ -40,6 +40,10 @@ PACKAGE_STUFF = {
 			'\nCflags: -I${includedir}/python3',
 }
 
+def is_tool(name):
+	from distutils.spawn import find_executable
+	return find_executable(name) is not None
+
 def exitHelp():
 	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.0 /test/cross_compilers/....../")
 	exit(1)
