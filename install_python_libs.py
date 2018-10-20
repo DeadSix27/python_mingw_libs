@@ -16,6 +16,7 @@
 
 import sys,os,urllib
 SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7']
+RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
 PACKAGE_STUFF = {
 		'dllzname' : 'python36',
@@ -72,6 +73,9 @@ else:
 	if sys.argv[1] == "install":
 		arch    = sys.argv[2]
 		ver     = sys.argv[3]
+		rc_ver  = ver
+		if ver in RC_VERS:
+			rc_ver = RC_VERS[ver]
 		prefix  = sys.argv[4]
 		dlltool = sys.argv[5]
 		gendef  = sys.argv[6]
@@ -85,7 +89,7 @@ else:
 		os.system("mkdir lib")
 		os.chdir("lib")
 		
-		url,filename = 'https://www.python.org/ftp/python/{0}/python-{0}-embed-{1}.zip'.format(ver,arch), 'python-{0}-embed-{1}.zip'.format(ver,arch)
+		url,filename = 'https://www.python.org/ftp/python/{0}/python-{2}-embed-{1}.zip'.format(ver,arch,rc_ver), 'python-{0}-embed-{1}.zip'.format(rc_ver,arch)
 		print("Downloading: " + url)
 		urllib.urlretrieve(url,filename)
 		print("Done")
@@ -131,27 +135,27 @@ else:
 		
 		os.chdir("..")
 				
-		url,filename = 'https://www.python.org/ftp/python/{0}/Python-{0}.tgz'.format(ver), 'Python-{0}.tgz'.format(ver)
+		url,filename = 'https://www.python.org/ftp/python/{0}/Python-{0}.tgz'.format(rc_ver), 'Python-{0}.tgz'.format(rc_ver)
 		print("Downloading: " + url)
 		urllib.urlretrieve(url,filename)
 		print("Done")
 		print("Extracting headers")
 		os.system("mkdir include")
-		os.system("tar -xvf {0} Python-{1}/Include".format(filename,ver))
-		os.system("mv Python-{0}/Include include/python3".format(ver))
+		os.system("tar -xvf {0} Python-{1}/Include".format(filename,rc_ver))
+		os.system("mv Python-{0}/Include include/python3".format(rc_ver))
 		
 		
-		os.system("tar -xvf {0} Python-{1}/PC/pyconfig.h".format(filename,ver))
+		os.system("tar -xvf {0} Python-{1}/PC/pyconfig.h".format(filename,rc_ver))
 		
-		simplePatch("Python-{0}/PC/pyconfig.h".format(ver),"#define hypot _hypot","#if (__GNUC__<6)\n#define hypot _hypot\n#endif")
+		simplePatch("Python-{0}/PC/pyconfig.h".format(rc_ver),"#define hypot _hypot","#if (__GNUC__<6)\n#define hypot _hypot\n#endif")
 		
-		os.system("mv Python-{0}/PC/pyconfig.h include/python3/".format(ver))
+		os.system("mv Python-{0}/PC/pyconfig.h include/python3/".format(rc_ver))
 		
 		
 		
 		print("Done")
 		os.unlink(filename)
-		os.system("rm -r Python-{0}".format(ver))
+		os.system("rm -r Python-{0}".format(rc_ver))
 		
 		os.chdir("..")
 		print("Installing to " + prefix)
