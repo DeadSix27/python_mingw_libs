@@ -142,20 +142,20 @@ else:
 		print("Extracting headers")
 		os.system("mkdir include")
 		os.system("tar -xvf {0} Python-{1}/Include".format(filename,rc_ver))
-		os.system("mv Python-{0}/Include include/python3".format(rc_ver))
+		os.system("mv Python-{0}/Include include/python3".format(ver))
 		
 		
-		os.system("tar -xvf {0} Python-{1}/PC/pyconfig.h".format(filename,rc_ver))
+		os.system("tar -xvf {0} Python-{1}/PC/pyconfig.h".format(filename,ver))
 		
-		simplePatch("Python-{0}/PC/pyconfig.h".format(rc_ver),"#define hypot _hypot","#if (__GNUC__<6)\n#define hypot _hypot\n#endif")
+		simplePatch("Python-{0}/PC/pyconfig.h".format(ver),"#define hypot _hypot","#if (__GNUC__<6)\n#define hypot _hypot\n#endif")
 		
-		os.system("mv Python-{0}/PC/pyconfig.h include/python3/".format(rc_ver))
+		os.system("mv Python-{0}/PC/pyconfig.h include/python3/".format(ver))
 		
 		
 		
 		print("Done")
 		os.unlink(filename)
-		os.system("rm -r Python-{0}".format(rc_ver))
+		os.system("rm -r Python-{0}".format(ver))
 		
 		os.chdir("..")
 		print("Installing to " + prefix)
