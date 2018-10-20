@@ -16,7 +16,7 @@
 
 import sys,os,urllib
 
-_DEBUG = True
+_DEBUG = False
 
 SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
@@ -46,7 +46,7 @@ PACKAGE_STUFF = {
 
 def run_cmd(cmd):
 	if _DEBUG:
-		print("Running command in '%s': '%s'" % (os.getcwd(),cmd))
+		print("\n--Running command in '%s': '%s'\n--" % (os.getcwd(),cmd))
 	os.system(cmd)
 
 def is_tool(name):
@@ -91,10 +91,10 @@ else:
 		if ver not in SUPPORTED_VERSIONS:
 			exitVersions()
 			
-		os.system("mkdir work")
-		os.system("mkdir bin")
+		run_cmd("mkdir work")
+		run_cmd("mkdir bin")
 		os.chdir("work")
-		os.system("mkdir lib")
+		run_cmd("mkdir lib")
 		os.chdir("lib")
 		
 		url,filename = 'https://www.python.org/ftp/python/{0}/python-{2}-embed-{1}.zip'.format(ver,arch,rc_ver), 'python-{0}-embed-{1}.zip'.format(rc_ver,arch)
@@ -105,29 +105,29 @@ else:
 		dllname = PACKAGE_STUFF["dllzname"]
 		
 		print("Extracting dll")
-		os.system('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
-		os.system('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
-		os.system('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
+		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
+		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
+		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
 		print("Local installing dll")
-		os.system('cp {0}.zip ../../bin'.format(dllname))
-		os.system('cp {0}.dll ../../bin'.format(dllname))
-		os.system('cp _ctypes.pyd ../../bin'.format(dllname))
+		run_cmd('cp {0}.zip ../../bin'.format(dllname))
+		run_cmd('cp {0}.dll ../../bin'.format(dllname))
+		run_cmd('cp _ctypes.pyd ../../bin'.format(dllname))
 		print("Done")
 		print("Deleting archive")
 		os.unlink(filename)
 		
 		print("Creating library")
-		os.system("{0} {1}.dll".format(gendef,dllname))
+		run_cmd("{0} {1}.dll".format(gendef,dllname))
 		
 		defname = dllname + ".def"
-		os.system("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"]))
+		run_cmd("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"]))
 		
 		print("Done")
 		
 		os.unlink(defname)
 		os.unlink(dllname+".dll")		
 		
-		os.system("mkdir pkgconfig")
+		run_cmd("mkdir pkgconfig")
 		
 		os.chdir("pkgconfig")
 		
@@ -142,40 +142,40 @@ else:
 		os.chdir("..")
 		
 		os.chdir("..")
+		url,filename = 'https://www.python.org/ftp/python/{0}/Python-{1}.tgz'.format(ver,rc_ver), 'Python-{0}.tgz'.format(rc_ver)
 				
-		url,filename = 'https://www.python.org/ftp/python/{0}/Python-{0}.tgz'.format(rc_ver), 'Python-{0}.tgz'.format(rc_ver)
 		print("Downloading: " + url)
 		urllib.urlretrieve(url,filename)
 		print("Done")
 		print("Extracting headers")
-		os.system("mkdir include")
-		os.system("tar -xvf {0} Python-{1}/Include".format(filename,rc_ver))
-		os.system("mv Python-{0}/Include include/python3".format(ver))
+		run_cmd("mkdir include")
+		run_cmd("tar -xvf {0} Python-{1}/Include".format(filename,rc_ver))
+		run_cmd("mv Python-{0}/Include include/python3".format(rc_ver))
 		
 		
-		os.system("tar -xvf {0} Python-{1}/PC/pyconfig.h".format(filename,ver))
+		run_cmd("tar -xvf {0} Python-{1}/PC/pyconfig.h".format(filename,rc_ver))
 		
-		simplePatch("Python-{0}/PC/pyconfig.h".format(ver),"#define hypot _hypot","#if (__GNUC__<6)\n#define hypot _hypot\n#endif")
+		simplePatch("Python-{0}/PC/pyconfig.h".format(rc_ver),"#define hypot _hypot","#if (__GNUC__<6)\n#define hypot _hypot\n#endif")
 		
-		os.system("mv Python-{0}/PC/pyconfig.h include/python3/".format(ver))
+		run_cmd("mv Python-{0}/PC/pyconfig.h include/python3/".format(rc_ver))
 		
 		
 		
 		print("Done")
 		os.unlink(filename)
-		os.system("rm -r Python-{0}".format(ver))
+		run_cmd("rm -r Python-{0}".format(rc_ver))
 		
 		os.chdir("..")
 		print("Installing to " + prefix)
 		
 		if not os.path.isdir(prefix):
 			print("ERROR: '" + prefix + "' does not exist")
-			os.system("rm -r work")
+			run_cmd("rm -r work")
 			exit(1)
 		
-		os.system("rsync -aKv work/ {0}".format(prefix))
+		run_cmd("rsync -aKv work/ {0}".format(prefix))
 		
-		os.system("rm -r work")
+		run_cmd("rm -r work")
 		
 		
 	elif sys.argv[1] == "uninstall":
