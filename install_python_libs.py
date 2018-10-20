@@ -46,7 +46,7 @@ PACKAGE_STUFF = {
 
 def run_cmd(cmd):
 	if _DEBUG:
-		print("Running command: '%s'" % (cmd))
+		print("Running command in '%s': '%s'" % (os.getcwd(),cmd))
 	os.system(cmd)
 
 def is_tool(name):
