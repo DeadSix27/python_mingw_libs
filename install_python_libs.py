@@ -15,6 +15,9 @@
 # #################################################################################################################
 
 import sys,os,urllib
+
+_DEBUG = True
+
 SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
@@ -40,6 +43,11 @@ PACKAGE_STUFF = {
 			'\nLibs: -L${libdir} -lpython36'
 			'\nCflags: -I${includedir}/python3',
 }
+
+def run_cmd(cmd):
+	if _DEBUG:
+		print("Running command: '%s'" % (cmd))
+	os.system(cmd)
 
 def is_tool(name):
 	from distutils.spawn import find_executable
