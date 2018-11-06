@@ -18,17 +18,24 @@ import sys,os,urllib
 
 _DEBUG = False
 
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
+VERSION_SPECIFICS = { #stupid idea, but works. Too lazy to make it proper with version parser.
+	'3.7.1' : {
+		'short' : '37',
+		'short_dot' : '3.7',
+	},
+}
+
 PACKAGE_STUFF = {
-		'dllzname' : 'python36',
+		'dllzname' : 'python%%SHORT%%',
 		'pc_names' : (
-			'python-3.6.pc',
+			'python-%%SHORT_DOT%%.pc',
 			'python3.pc',
-			'python-3.6m.pc',
+			'python-%%SHORT_DOT%%m.pc',
 		),
-		'libname' : 'libpython36.a',
+		'libname' : 'libpython%%SHORT%%.a',
 		'pcfile' : 
 			'prefix=%%PREFIX%%'
 			'\nexec_prefix=${prefix}'
@@ -40,7 +47,7 @@ PACKAGE_STUFF = {
 			'\nRequires:'
 			'\nVersion: %%VERSION%%'
 			'\nLibs.private:'
-			'\nLibs: -L${libdir} -lpython36'
+			'\nLibs: -L${libdir} -lpython%%SHORT%%'
 			'\nCflags: -I${includedir}/python3',
 }
 
@@ -54,7 +61,7 @@ def is_tool(name):
 	return find_executable(name) is not None
 
 def exitHelp():
-	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.0 /test/cross_compilers/....../")
+	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.1 /test/cross_compilers/....../")
 	exit(1)
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
@@ -88,6 +95,13 @@ else:
 		dlltool = sys.argv[5]
 		gendef  = sys.argv[6]
 		
+		ver_short     = "36"
+		ver_short_dot = "3.6"
+		
+		if ver in VERSION_SPECIFICS:
+			ver_short     = VERSION_SPECIFICS[ver]["short"]
+			ver_short_dot = VERSION_SPECIFICS[ver]["short_dot"]
+		
 		if ver not in SUPPORTED_VERSIONS:
 			exitVersions()
 			
@@ -102,7 +116,7 @@ else:
 		urllib.urlretrieve(url,filename)
 		print("Done")
 		
-		dllname = PACKAGE_STUFF["dllzname"]
+		dllname = PACKAGE_STUFF["dllzname"].replace("%%SHORT%%",ver_short)
 		
 		print("Extracting dll")
 		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
@@ -120,7 +134,7 @@ else:
 		run_cmd("{0} {1}.dll".format(gendef,dllname))
 		
 		defname = dllname + ".def"
-		run_cmd("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"]))
+		run_cmd("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"].replace("%%SHORT%%",ver_short)))
 		
 		print("Done")
 		
@@ -133,9 +147,9 @@ else:
 		
 		print("Creating pkgconfig")
 		
-		pc = PACKAGE_STUFF["pcfile"].replace('%%PREFIX%%',prefix).replace('%%VERSION%%',ver)
+		pc = PACKAGE_STUFF["pcfile"].replace('%%PREFIX%%',prefix).replace('%%VERSION%%',ver).replace("%%SHORT%%",ver_short)
 		
-		for fn in PACKAGE_STUFF["pc_names"]:
+		for fn in PACKAGE_STUFF["pc_names"].replace("%%SHORT_DOT%%",ver_short_dot):
 			with open(fn,"w") as f:
 				f.write(pc)
 		
