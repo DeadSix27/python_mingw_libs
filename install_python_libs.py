@@ -149,8 +149,8 @@ else:
 		
 		pc = PACKAGE_STUFF["pcfile"].replace('%%PREFIX%%',prefix).replace('%%VERSION%%',ver).replace("%%SHORT%%",ver_short)
 		
-		for fn in PACKAGE_STUFF["pc_names"].replace("%%SHORT_DOT%%",ver_short_dot):
-			with open(fn,"w") as f:
+		for fn in PACKAGE_STUFF["pc_names"]:
+			with open(fn.replace("%%SHORT_DOT%%",ver_short_dot),"w") as f:
 				f.write(pc)
 		
 		os.chdir("..")
