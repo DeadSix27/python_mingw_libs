@@ -15,18 +15,12 @@
 # #################################################################################################################
 
 import sys,os,urllib
+from distutils.version import LooseVersion
 
 _DEBUG = False
 
 SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
-
-VERSION_SPECIFICS = { #stupid idea, but works. Too lazy to make it proper with version parser.
-	'3.7.1' : {
-		'short' : '37',
-		'short_dot' : '3.7',
-	},
-}
 
 PACKAGE_STUFF = {
 		'dllzname' : 'python%%SHORT%%',
@@ -55,6 +49,9 @@ def run_cmd(cmd):
 	if _DEBUG:
 		print("\n--Running command in '%s': '%s'\n--" % (os.getcwd(),cmd))
 	os.system(cmd)
+	
+def short_version(v,joinStr = ""):
+	return joinStr.join(v.split(".")[0:2])
 
 def is_tool(name):
 	from distutils.spawn import find_executable
@@ -95,12 +92,8 @@ else:
 		dlltool = sys.argv[5]
 		gendef  = sys.argv[6]
 		
-		ver_short     = "36"
-		ver_short_dot = "3.6"
-		
-		if ver in VERSION_SPECIFICS:
-			ver_short     = VERSION_SPECIFICS[ver]["short"]
-			ver_short_dot = VERSION_SPECIFICS[ver]["short_dot"]
+		ver_short     = short_version(ver)
+		ver_short_dot = short_version(ver,".")
 		
 		if ver not in SUPPORTED_VERSIONS:
 			exitVersions()
@@ -120,6 +113,11 @@ else:
 		
 		print("Extracting dll")
 		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
+		
+		if LooseVersion(ver) > LooseVersion("3.6.9"): # version 3.7 requires these as well apparently. (At least for vapoursynth to work in mpv)
+			run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
+			run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
+		
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
 		print("Local installing dll")
