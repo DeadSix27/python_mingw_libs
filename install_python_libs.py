@@ -15,20 +15,21 @@
 # #################################################################################################################
 
 import sys,os,urllib
+from distutils.version import LooseVersion
 
 _DEBUG = False
 
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
 PACKAGE_STUFF = {
-		'dllzname' : 'python36',
+		'dllzname' : 'python%%SHORT%%',
 		'pc_names' : (
-			'python-3.6.pc',
+			'python-%%SHORT_DOT%%.pc',
 			'python3.pc',
-			'python-3.6m.pc',
+			'python-%%SHORT_DOT%%m.pc',
 		),
-		'libname' : 'libpython36.a',
+		'libname' : 'libpython%%SHORT%%.a',
 		'pcfile' : 
 			'prefix=%%PREFIX%%'
 			'\nexec_prefix=${prefix}'
@@ -40,21 +41,26 @@ PACKAGE_STUFF = {
 			'\nRequires:'
 			'\nVersion: %%VERSION%%'
 			'\nLibs.private:'
-			'\nLibs: -L${libdir} -lpython36'
+			'\nLibs: -L${libdir} -lpython%%SHORT%%'
 			'\nCflags: -I${includedir}/python3',
 }
 
 def run_cmd(cmd):
 	if _DEBUG:
 		print("\n--Running command in '%s': '%s'\n--" % (os.getcwd(),cmd))
-	os.system(cmd)
+	if os.system(cmd) != 0:
+		print("Failed to execute: " + str(cmd))
+		exit(1)
+
+def short_version(v,joinStr = ""):
+	return joinStr.join(v.split(".")[0:2])
 
 def is_tool(name):
 	from distutils.spawn import find_executable
 	return find_executable(name) is not None
 
 def exitHelp():
-	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.0 /test/cross_compilers/....../")
+	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.1 /test/cross_compilers/....../")
 	exit(1)
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
@@ -88,13 +94,16 @@ else:
 		dlltool = sys.argv[5]
 		gendef  = sys.argv[6]
 		
+		ver_short     = short_version(ver)
+		ver_short_dot = short_version(ver,".")
+		
 		if ver not in SUPPORTED_VERSIONS:
 			exitVersions()
 			
-		run_cmd("mkdir work")
-		run_cmd("mkdir bin")
+		run_cmd("mkdir -p work")
+		run_cmd("mkdir -p bin")
 		os.chdir("work")
-		run_cmd("mkdir lib")
+		run_cmd("mkdir -p lib")
 		os.chdir("lib")
 		
 		url,filename = 'https://www.python.org/ftp/python/{0}/python-{2}-embed-{1}.zip'.format(ver,arch,rc_ver), 'python-{0}-embed-{1}.zip'.format(rc_ver,arch)
@@ -102,16 +111,23 @@ else:
 		urllib.urlretrieve(url,filename)
 		print("Done")
 		
-		dllname = PACKAGE_STUFF["dllzname"]
+		dllname = PACKAGE_STUFF["dllzname"].replace("%%SHORT%%",ver_short)
 		
 		print("Extracting dll")
 		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
+		if LooseVersion(ver) > LooseVersion("3.6.9"): # version 3.7 requires these as well apparently. (At least for vapoursynth to work in mpv)
+			run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
+			run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
+		
 		print("Local installing dll")
 		run_cmd('cp {0}.zip ../../bin'.format(dllname))
 		run_cmd('cp {0}.dll ../../bin'.format(dllname))
 		run_cmd('cp _ctypes.pyd ../../bin'.format(dllname))
+		if LooseVersion(ver) > LooseVersion("3.6.9"):
+			run_cmd('cp _asyncio.pyd ../../bin'.format(dllname))
+			run_cmd('cp _contextvars.pyd ../../bin'.format(dllname))
 		print("Done")
 		print("Deleting archive")
 		os.unlink(filename)
@@ -120,23 +136,23 @@ else:
 		run_cmd("{0} {1}.dll".format(gendef,dllname))
 		
 		defname = dllname + ".def"
-		run_cmd("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"]))
+		run_cmd("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"].replace("%%SHORT%%",ver_short)))
 		
 		print("Done")
 		
 		os.unlink(defname)
 		os.unlink(dllname+".dll")		
 		
-		run_cmd("mkdir pkgconfig")
+		run_cmd("mkdir -p pkgconfig")
 		
 		os.chdir("pkgconfig")
 		
 		print("Creating pkgconfig")
 		
-		pc = PACKAGE_STUFF["pcfile"].replace('%%PREFIX%%',prefix).replace('%%VERSION%%',ver)
+		pc = PACKAGE_STUFF["pcfile"].replace('%%PREFIX%%',prefix).replace('%%VERSION%%',ver).replace("%%SHORT%%",ver_short)
 		
 		for fn in PACKAGE_STUFF["pc_names"]:
-			with open(fn,"w") as f:
+			with open(fn.replace("%%SHORT_DOT%%",ver_short_dot),"w") as f:
 				f.write(pc)
 		
 		os.chdir("..")
