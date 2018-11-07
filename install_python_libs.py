@@ -100,10 +100,10 @@ else:
 		if ver not in SUPPORTED_VERSIONS:
 			exitVersions()
 			
-		run_cmd("mkdir work")
-		run_cmd("mkdir bin")
+		run_cmd("mkdir -p work")
+		run_cmd("mkdir -p bin")
 		os.chdir("work")
-		run_cmd("mkdir lib")
+		run_cmd("mkdir -p lib")
 		os.chdir("lib")
 		
 		url,filename = 'https://www.python.org/ftp/python/{0}/python-{2}-embed-{1}.zip'.format(ver,arch,rc_ver), 'python-{0}-embed-{1}.zip'.format(rc_ver,arch)
@@ -115,17 +115,19 @@ else:
 		
 		print("Extracting dll")
 		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
-		
 		if LooseVersion(ver) > LooseVersion("3.6.9"): # version 3.7 requires these as well apparently. (At least for vapoursynth to work in mpv)
 			run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
 			run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
-		
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
+		
 		print("Local installing dll")
 		run_cmd('cp {0}.zip ../../bin'.format(dllname))
 		run_cmd('cp {0}.dll ../../bin'.format(dllname))
 		run_cmd('cp _ctypes.pyd ../../bin'.format(dllname))
+		if LooseVersion(ver) > LooseVersion("3.6.9"):
+			run_cmd('cp _asyncio.pyd ../../bin'.format(dllname))
+			run_cmd('cp _contextvars.pyd ../../bin'.format(dllname))
 		print("Done")
 		print("Deleting archive")
 		os.unlink(filename)
@@ -141,7 +143,7 @@ else:
 		os.unlink(defname)
 		os.unlink(dllname+".dll")		
 		
-		run_cmd("mkdir pkgconfig")
+		run_cmd("mkdir -p pkgconfig")
 		
 		os.chdir("pkgconfig")
 		
