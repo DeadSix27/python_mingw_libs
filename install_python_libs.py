@@ -48,8 +48,10 @@ PACKAGE_STUFF = {
 def run_cmd(cmd):
 	if _DEBUG:
 		print("\n--Running command in '%s': '%s'\n--" % (os.getcwd(),cmd))
-	os.system(cmd)
-	
+	if os.system(cmd) != 0:
+		print("Failed to execute: " + str(cmd))
+		exit(1)
+
 def short_version(v,joinStr = ""):
 	return joinStr.join(v.split(".")[0:2])
 
