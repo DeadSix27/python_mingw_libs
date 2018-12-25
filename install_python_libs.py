@@ -19,7 +19,7 @@ from distutils.version import LooseVersion
 
 _DEBUG = False
 
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1','3.7.2']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
 PACKAGE_STUFF = {
@@ -60,7 +60,7 @@ def is_tool(name):
 	return find_executable(name) is not None
 
 def exitHelp():
-	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.1 /test/cross_compilers/....../")
+	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.2 /test/cross_compilers/....../")
 	exit(1)
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
