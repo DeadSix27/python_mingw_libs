@@ -115,9 +115,9 @@ else:
 		
 		print("Extracting dll")
 		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
-		if LooseVersion(ver) > LooseVersion("3.6.9"): # version 3.7 requires these as well apparently. (At least for vapoursynth to work in mpv)
-			run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
-			run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
+		# if LooseVersion(ver) > LooseVersion("3.6.9"): # version 3.7 requires these as well apparently. (At least for vapoursynth to work in mpv)
+			# run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
+			# run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
 		
