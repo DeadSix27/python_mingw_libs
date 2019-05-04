@@ -11,7 +11,7 @@
 # limitations under the License.
 # #################################################################################################################
 
-PYTHON_VERSION = 3.7.2
+PYTHON_VERSION = 3.7.3
 #amd64, win32
 ARCH = amd64
 ifndef PREFIX
