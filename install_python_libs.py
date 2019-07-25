@@ -19,7 +19,7 @@ from distutils.version import LooseVersion
 
 _DEBUG = False
 
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1','3.7.2','3.7.3']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1','3.7.2','3.7.3','3.7.4']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
 PACKAGE_STUFF = {
