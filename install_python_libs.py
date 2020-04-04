@@ -19,7 +19,7 @@ from distutils.version import LooseVersion
 
 _DEBUG = False
 
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1','3.7.2','3.7.3','3.7.4','3.7.5']
+SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1','3.7.2','3.7.3','3.7.4','3.7.5','3.8.2']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
 PACKAGE_STUFF = {
@@ -60,7 +60,7 @@ def is_tool(name):
 	return find_executable(name) is not None
 
 def exitHelp():
-	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.7.5 /test/cross_compilers/....../")
+	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.8.2 /test/cross_compilers/....../")
 	exit(1)
 def exitVersions():
 	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
@@ -119,12 +119,14 @@ else:
 			# run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
 			# run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
+		run_cmd('unzip -po {0} libffi-7.dll >libffi-7.dll'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
 		
 		print("Local installing dll")
 		run_cmd('cp {0}.zip ../../bin'.format(dllname))
 		run_cmd('cp {0}.dll ../../bin'.format(dllname))
-		run_cmd('cp _ctypes.pyd ../../bin'.format(dllname))
+		run_cmd('cp _ctypes.pyd ../../bin')
+		run_cmd('cp libffi-7.dll ../../bin')
 		# if LooseVersion(ver) > LooseVersion("3.6.9"):
 			# run_cmd('cp _asyncio.pyd ../../bin'.format(dllname))
 			# run_cmd('cp _contextvars.pyd ../../bin'.format(dllname))
