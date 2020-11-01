@@ -119,7 +119,7 @@ else:
 			# run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
 			# run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
-		run_cmd('unzip -po {0} libffi-7.dll >libffi-7.dll'.format(filename))
+		#run_cmd('unzip -po {0} libffi-7.dll >libffi-7.dll'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
 		
 		print("Local installing dll")
