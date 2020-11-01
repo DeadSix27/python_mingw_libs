@@ -126,7 +126,7 @@ else:
 		run_cmd('cp {0}.zip ../../bin'.format(dllname))
 		run_cmd('cp {0}.dll ../../bin'.format(dllname))
 		run_cmd('cp _ctypes.pyd ../../bin')
-		run_cmd('cp libffi-7.dll ../../bin')
+		#run_cmd('cp libffi-7.dll ../../bin')
 		# if LooseVersion(ver) > LooseVersion("3.6.9"):
 			# run_cmd('cp _asyncio.pyd ../../bin'.format(dllname))
 			# run_cmd('cp _contextvars.pyd ../../bin'.format(dllname))
