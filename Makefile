@@ -25,6 +25,6 @@ $(error DLLTOOL is not set)
 endif
 
 all:
-	@python2 install_python_libs.py install $(ARCH) $(PYTHON_VERSION) $(PREFIX) $(DLLTOOL) $(GENDEF)
+	@python install_python_libs.py install $(ARCH) $(PYTHON_VERSION) $(PREFIX) $(DLLTOOL) $(GENDEF)
 uninstall:
-	@python2 install_python_libs.py uninstall $(ARCH) $(PYTHON_VERSION) $(PREFIX) $(DLLTOOL) $(GENDEF)
+	@python install_python_libs.py uninstall $(ARCH) $(PYTHON_VERSION) $(PREFIX) $(DLLTOOL) $(GENDEF)
