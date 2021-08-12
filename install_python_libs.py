@@ -16,6 +16,7 @@
 
 import sys,os,urllib
 from distutils.version import LooseVersion
+from urllib.request import urlretrieve
 
 _DEBUG = False
 
@@ -108,7 +109,7 @@ else:
 		
 		url,filename = 'https://www.python.org/ftp/python/{0}/python-{2}-embed-{1}.zip'.format(ver,arch,rc_ver), 'python-{0}-embed-{1}.zip'.format(rc_ver,arch)
 		print("Downloading: " + url)
-		urllib.urlretrieve(url,filename)
+		urlretrieve(url,filename)
 		print("Done")
 		
 		dllname = PACKAGE_STUFF["dllzname"].replace("%%SHORT%%",ver_short)
@@ -163,7 +164,7 @@ else:
 		url,filename = 'https://www.python.org/ftp/python/{0}/Python-{1}.tgz'.format(ver,rc_ver), 'Python-{0}.tgz'.format(rc_ver)
 				
 		print("Downloading: " + url)
-		urllib.urlretrieve(url,filename)
+		urlretrieve(url,filename)
 		print("Done")
 		print("Extracting headers")
 		run_cmd("mkdir include")
