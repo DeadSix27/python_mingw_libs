@@ -20,7 +20,6 @@ from urllib.request import urlretrieve
 
 _DEBUG = False
 
-SUPPORTED_VERSIONS = ['3.6.4','3.6.5','3.6.6','3.6.7','3.7.1','3.7.2','3.7.3','3.7.4','3.7.5','3.8.2','3.9.6']
 RC_VERS = { '3.6.7' : '3.6.7rc2' }
 
 PACKAGE_STUFF = {
@@ -63,9 +62,6 @@ def is_tool(name):
 def exitHelp():
 	print("install_python_libs.py install/uninstall <arch> <version> <install_prefix> - e.g install_python_libs.py amd64 3.8.2 /test/cross_compilers/....../")
 	exit(1)
-def exitVersions():
-	print("Only these versions are supported: " + " ".join(SUPPORTED_VERSIONS))
-	exit(1)
 	
 def simplePatch(infile,replacetext,withtext):
 	lines = []
@@ -97,9 +93,6 @@ else:
 		
 		ver_short     = short_version(ver)
 		ver_short_dot = short_version(ver,".")
-		
-		if ver not in SUPPORTED_VERSIONS:
-			exitVersions()
 			
 		run_cmd("mkdir -p work")
 		run_cmd("mkdir -p bin")
