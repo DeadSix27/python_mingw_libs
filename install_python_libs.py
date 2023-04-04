@@ -109,9 +109,10 @@ else:
 		
 		print("Extracting dll")
 		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
-		# if LooseVersion(ver) > LooseVersion("3.6.9"): # version 3.7 requires these as well apparently. (At least for vapoursynth to work in mpv)
-			# run_cmd('unzip -po {0} _asyncio.pyd >_asyncio.pyd'.format(filename))
-			# run_cmd('unzip -po {0} _contextvars.pyd >_contextvars.pyd'.format(filename))
+		if LooseVersion(ver) > LooseVersion("3.10"):
+			run_cmd('unzip -po {0} libffi-8.dll >libffi-8.dll'.format(filename))
+		else:
+			run_cmd('unzip -po {0} libffi-7.dll >libffi-7.dll'.format(filename))
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
 		run_cmd('unzip -po {0} libffi-7.dll >libffi-7.dll'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
@@ -121,7 +122,7 @@ else:
 		run_cmd('cp {0}.dll ../../bin'.format(dllname))
 		run_cmd('cp _ctypes.pyd ../../bin')
 		if LooseVersion(ver) > LooseVersion("3.10"):
-			run_cmd('cp libffi-8.dll ../../bin'.format(dllname))
+			run_cmd('cp libffi-8.dll ../../bin')
 		else:
 			run_cmd('cp libffi-7.dll ../../bin')
 		print("Done")
