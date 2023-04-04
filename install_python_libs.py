@@ -84,6 +84,11 @@ else:
 	if sys.argv[1] == "install":
 		arch    = sys.argv[2]
 		ver     = sys.argv[3]
+		
+		
+		if LooseVersion(ver) <= LooseVersion("3.10"):
+			print("Use newer version than 3.10.")
+			exit()
 		rc_ver  = ver
 		if ver in RC_VERS:
 			rc_ver = RC_VERS[ver]
@@ -109,10 +114,7 @@ else:
 		
 		print("Extracting dll")
 		run_cmd('unzip -po {0} {1}.dll >{1}.dll'.format(filename,dllname))
-		if LooseVersion(ver) > LooseVersion("3.10"):
-			run_cmd('unzip -po {0} libffi-8.dll >libffi-8.dll'.format(filename))
-		else:
-			run_cmd('unzip -po {0} libffi-7.dll >libffi-7.dll'.format(filename))
+		run_cmd('unzip -po {0} libffi-8.dll >libffi-8.dll'.format(filename))
 		run_cmd('unzip -po {0} _ctypes.pyd >_ctypes.pyd'.format(filename))
 		run_cmd('unzip -po {0} libffi-7.dll >libffi-7.dll'.format(filename))
 		run_cmd('unzip -po {0} {1}.zip >{1}.zip'.format(filename,dllname))
@@ -121,10 +123,7 @@ else:
 		run_cmd('cp {0}.zip ../../bin'.format(dllname))
 		run_cmd('cp {0}.dll ../../bin'.format(dllname))
 		run_cmd('cp _ctypes.pyd ../../bin')
-		if LooseVersion(ver) > LooseVersion("3.10"):
-			run_cmd('cp libffi-8.dll ../../bin')
-		else:
-			run_cmd('cp libffi-7.dll ../../bin')
+		run_cmd('cp libffi-8.dll ../../bin')
 		print("Done")
 		print("Deleting archive")
 		os.unlink(filename)
