@@ -131,7 +131,8 @@ else:
 		run_cmd("{0} {1}.dll".format(gendef,dllname))
 		
 		defname = dllname + ".def"
-		run_cmd("{0} -d {1} -y {2}".format(dlltool,defname,PACKAGE_STUFF["libname"].replace("%%SHORT%%",ver_short)))
+		
+		run_cmd(f"{dlltool} -m i386:x86-64 -D {dllname}.dll -d {defname} -l {PACKAGE_STUFF['libname'].replace('%%SHORT%%',ver_short)}")
 		
 		print("Done")
 		
